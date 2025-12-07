@@ -104,14 +104,15 @@ class RefragModel(PreTrainedModel):
         Returns a list of (segment_index, row_logits_tensor) where row_logits_tensor is (num_rows, vocab_size).
         """
         results = []
+        device = self.projector.weight.device
         for i, seg in enumerate(segments):
             if seg["type"] == "encoder":
                 packed = seg.get("packed_tokens", [])
                 masks = seg.get("attention_mask", [])
                 row_logits = []
                 for row_ids, row_mask in zip(packed, masks):
-                    ids = torch.tensor(row_ids, dtype=torch.long).unsqueeze(0)
-                    attn = torch.tensor(row_mask, dtype=torch.long).unsqueeze(0)
+                    ids = torch.tensor(row_ids, dtype=torch.long, device=device).unsqueeze(0)
+                    attn = torch.tensor(row_mask, dtype=torch.long, device=device).unsqueeze(0)
                     enc_out = self.encoder(input_ids=ids, attention_mask=attn)
                     if hasattr(enc_out, "pooler_output") and enc_out.pooler_output is not None:
                         cls_emb = enc_out.pooler_output.squeeze(0)
