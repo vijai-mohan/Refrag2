@@ -1,0 +1,158 @@
+# Reconstruction curriculum training (dev-friendly defaults; use stage_scale=1.0 to reproduce Table 12)
+_target_: refrag.framework.apps.reconstruction.ReconstructionCurriculumApp
+
+device: ${device}
+
+model:
+  encoder: "roberta-large"
+  decoder: "meta-llama/Llama-2-7b-hf"
+  compression: 8  # k in paper; matches table 8 curriculum factors (1x8 ... 256x8)
+  projector_hidden_dim: 1024
+  training_model: "pe"  # train projector + encoder, freeze decoder for reconstruction
+  pad_token_id: 1
+
+dataset:
+  # Use a small RedPajama sample for quick dev runs without large shard enumeration.
+  name: "michelangelo-engs/RedPajama-Data-1T-1024Sample"
+  split: "train"
+  text_key: "text"
+  streaming: true
+  filter_field: null
+  seed: ${seed}
+  max_tokens: 256  # s = 2048 tokens per example (T = 4096 with o = 2048 held out for CPT)
+  min_tokens: 64
+  shuffle_buffer: 100  # keep buffer small so only a tiny slice is streamed during dev runs
+  domains:
+    - name: "redpajama_sample"
+      weight: 1.0
+      token_budget: 256000   # small dev budget to avoid large downloads
+      max_samples: 256000
+  hf_token: ${HF_TOKEN}
+
+train:
+  batch_size: 1
+  lr: 2e-4
+  grad_clip: 1.0
+  warmup_ratio: 0.01
+  scheduler: cosine
+  log_every: 100
+  save_steps: 500
+  stage_scale: 1.0  # run at 0.1% of table-8 counts for quick dev smoke tests
+  max_steps: 256000      # cap steps so only a small slice of data is streamed
+  eval_every: 500       # run lightweight eval to track loss during training
+  eval_batches: 8       # number of eval batches per checkpoint
+  log_text_every: 200   # write ~10 recent text snippets to TensorBoard
+  output_dir: ${hydra:run.dir}/reconstruction
+  log_dir: ${hydra:run.dir}/tf
+
+curriculum:
+  base_tokens_per_chunk: 8  # k tokens per chunk embedding
+  stages:
+    - name: stage1
+      total_samples: 20000
+      mix:
+        1: 1333
+        2: 333
+        4: 83
+        8: 20
+        16: 5
+        32: 1
+        64: 1
+        128: 1
+        256: 1
+    - name: stage2
+      total_samples: 20000
+      mix:
+        1: 445
+        2: 298
+        4: 102
+        8: 35
+        16: 11
+        32: 3
+        64: 3
+        128: 3
+        256: 3
+    - name: stage3
+      total_samples: 20000
+      mix:
+        1: 148
+        2: 267
+        4: 126
+        8: 61
+        16: 23
+        32: 7
+        64: 9
+        128: 9
+        256: 9
+    - name: stage4
+      total_samples: 40000
+      mix:
+        1: 49
+        2: 238
+        4: 156
+        8: 106
+        16: 48
+        32: 19
+        64: 25
+        128: 25
+        256: 25
+    - name: stage5
+      total_samples: 40000
+      mix:
+        1: 16
+        2: 213
+        4: 193
+        8: 185
+        16: 103
+        32: 50
+        64: 73
+        128: 73
+        256: 73
+    - name: stage6
+      total_samples: 40000
+      mix:
+        1: 6
+        2: 191
+        4: 238
+        8: 324
+        16: 220
+        32: 133
+        64: 212
+        128: 212
+        256: 212
+    - name: stage7
+      total_samples: 80000
+      mix:
+        1: 2
+        2: 171
+        4: 293
+        8: 565
+        16: 468
+        32: 353
+        64: 618
+        128: 618
+        256: 618
+    - name: stage8
+      total_samples: 80000
+      mix:
+        1: 1
+        2: 153
+        4: 362
+        8: 985
+        16: 997
+        32: 939
+        64: 1802
+        128: 1802
+        256: 1802
+    - name: stage9
+      total_samples: 80000
+      mix:
+        1: 0
+        2: 137
+        4: 447
+        8: 1719
+        16: 2125
+        32: 2496
+        64: 5259
+        128: 5259
+        256: 5259

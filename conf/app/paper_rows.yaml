@@ -1,0 +1,42 @@
+# Baseline sweep covering the four rows reported in the Refrag paper.
+_target_: refrag.framework.apps.eval.EvalApp
+
+model:
+  # Default model placeholder; baselines below drive the actual runs.
+  name: "meta-llama/Llama-2-7b-chat-hf"
+
+eval:
+  save_dir: ./outputs/eval
+  device: ${device}
+  max_samples: null
+  trust_remote_code: true
+  lm_eval:
+    enabled: false  # baseline suite handles lm-eval per model
+    tasks: []
+    batch_size: 1
+    limit: null
+  ragas:
+    enabled: false
+  baselines:
+    enabled: true
+    suite_name: refrag_paper_rows
+    save_dir: ./outputs/baselines
+    accuracy_tasks: [mathqa, hellaswag, piqa, winogrande, mmlu]
+    perplexity_tasks: []
+    models:
+      # LLaMA full-context row (default behavior feeds context)
+      - name: llama_full_context
+        display_name: LLaMA2-7B-Full-Context
+        model_id: meta-llama/Llama-2-7b-chat-hf
+      # LLaMA no-context row (recognized by eval to drop retrieved context)
+      - name: llama_no_context
+        display_name: LLaMA2-7B-No-Context
+        model_id: meta-llama/Llama-2-7b-chat-hf
+      # Refrag with reconstruction (set REFRAG_RECON_MODEL env var or override model_id)
+      - name: refrag_reconstruction
+        display_name: Refrag-With-Reconstruction
+        model_id: ${oc.env:REFRAG_RECON_MODEL,"/path/to/refrag-reconstruction-checkpoint"}
+      # Refrag without reconstruction (set REFRAG_NO_RECON_MODEL env var or override model_id)
+      - name: refrag_no_reconstruction
+        display_name: Refrag-No-Reconstruction
+        model_id: ${oc.env:REFRAG_NO_RECON_MODEL,"/path/to/refrag-no-reconstruction-checkpoint"}
