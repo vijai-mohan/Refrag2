@@ -1,0 +1,24 @@
+_target_: refrag.framework.drivers.torchrun.TorchrunDriver
+
+# Basic distributed settings
+nproc_per_node: 2  # Number of GPUs/processes per node
+nnodes: 1  # Number of nodes
+node_rank: 0  # Rank of this node (0 for single node)
+
+# Master node settings (only used if standalone=false)
+master_addr: 127.0.0.1
+master_port: 29500
+
+# Rendezvous settings (only used if standalone=false)
+rdzv_backend: c10d
+rdzv_endpoint: 127.0.0.1:29500  # Auto-configured for standalone
+rdzv_id: null  # Auto-generated if not provided
+
+# Restart and monitoring
+max_restarts: 0  # Number of allowed restarts
+monitor_interval: 5.0  # Worker monitoring interval in seconds
+
+# Launch settings
+#start_method: spawn  # Multiprocessing start method (spawn, fork, forkserver)
+standalone: true  # TRUE for single-node jobs (simpler, avoids rendezvous issues)
+no_python: false  # Set to true if cmd already includes python

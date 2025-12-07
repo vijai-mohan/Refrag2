@@ -1,0 +1,29 @@
+# This configuration is for the RefragTrainerApp, which uses an integrated
+# training approach with a combined CE and KLD loss.
+
+_target_: refrag.framework.apps.train.RefragTrainerApp
+
+#model_name: "refrag" # Must be 'refrag' to trigger RefragModel creation
+
+# RefragModel specific configuration
+model:
+  encoder: "roberta-base"
+  decoder: "ibm-granite/granite-4.0-350M"
+  # Controls which parts of the model are trainable: (p)rojector, (e)ncoder, (d)ecoder
+  training_model: "ped"
+
+train:
+  epochs: 1
+  steps_per_epoch: 100
+  batch_size: 4
+  lr: 5e-5
+  grad_clip: 1.0
+  # Weight for the KLD component of the loss
+  kld_weight: 1.0
+  # Scheduler settings
+  scheduler: "cosine"
+  warmup_steps: 10
+  save_steps: 50
+
+# Hydra run directory will be used for the output
+save_dir: ${hydra:run.dir}/refrag_model

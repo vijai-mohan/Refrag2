@@ -1,0 +1,19 @@
+
+# Example external config for Refrag training
+model:
+  name: refrag
+  encoder: prajjwal1/bert-mini
+  decoder: sshleifer/tiny-gpt2
+  training_model: p  # only trainer projector
+
+train:
+  steps: 5
+  lr: 1e-4
+  batch_size: 2
+  compression: 4
+
+s3:
+  bucket: null
+
+task: trainer
+

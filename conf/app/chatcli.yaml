@@ -1,0 +1,6 @@
+_target_: refrag.framework.apps.chatcli.ChatCLIApp
+
+
+model_name: "meta-llama/Llama-3.2-1B-Instruct" #"facebook/opt-125m"
+device: ${device}  # inherit the root-level device (cpu/cuda) from conf/config.yaml
+system_prompt: "You are a helpful AI assistant. Be concise and accurate in your responses."

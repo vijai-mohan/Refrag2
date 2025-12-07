@@ -1,0 +1,1502 @@
+{
+  "group_subtasks": {
+    "mathqa": []
+  },
+  "configs": {
+    "mathqa": {
+      "task": "mathqa",
+      "tag": [
+        "math_word_problems"
+      ],
+      "dataset_path": "math_qa",
+      "training_split": "train",
+      "validation_split": "validation",
+      "test_split": "test",
+      "doc_to_text": "Question: {{Problem}}\nAnswer:",
+      "doc_to_target": "{{['a', 'b', 'c', 'd', 'e'].index(correct)}}",
+      "unsafe_code": false,
+      "doc_to_choice": "def doc_to_choice(doc):\n    choices = [\n        c[4:].rstrip(\" ,\")\n        for c in re.findall(r\"[abcd] \\) .*?, |e \\) .*?$\", doc[\"options\"])\n    ]\n    return choices\n",
+      "description": "",
+      "target_delimiter": " ",
+      "fewshot_delimiter": "\n\n",
+      "num_fewshot": 0,
+      "metric_list": [
+        {
+          "metric": "acc",
+          "aggregation": "mean",
+          "higher_is_better": true
+        },
+        {
+          "metric": "acc_norm",
+          "aggregation": "mean",
+          "higher_is_better": true
+        }
+      ],
+      "output_type": "multiple_choice",
+      "repeats": 1,
+      "should_decontaminate": true,
+      "doc_to_decontamination_query": "Question: {{Problem}}\nAnswer:",
+      "metadata": {
+        "version": 1.0,
+        "pretrained": "ibm-granite/granite-4.0-350M",
+        "tokenizer": "ibm-granite/granite-4.0-350M",
+        "dtype": "float32",
+        "trust_remote_code": true
+      }
+    }
+  },
+  "versions": {
+    "mathqa": 1.0,
+    "hellaswag": 1.0,
+    "piqa": 1.0,
+    "winogrande": 1.0,
+    "mmlu": 2,
+    "mmlu_abstract_algebra": 1.0,
+    "mmlu_anatomy": 1.0,
+    "mmlu_astronomy": 1.0,
+    "mmlu_business_ethics": 1.0,
+    "mmlu_clinical_knowledge": 1.0,
+    "mmlu_college_biology": 1.0,
+    "mmlu_college_chemistry": 1.0,
+    "mmlu_college_computer_science": 1.0,
+    "mmlu_college_mathematics": 1.0,
+    "mmlu_college_medicine": 1.0,
+    "mmlu_college_physics": 1.0,
+    "mmlu_computer_security": 1.0,
+    "mmlu_conceptual_physics": 1.0,
+    "mmlu_econometrics": 1.0,
+    "mmlu_electrical_engineering": 1.0,
+    "mmlu_elementary_mathematics": 1.0,
+    "mmlu_formal_logic": 1.0,
+    "mmlu_global_facts": 1.0,
+    "mmlu_high_school_biology": 1.0,
+    "mmlu_high_school_chemistry": 1.0,
+    "mmlu_high_school_computer_science": 1.0,
+    "mmlu_high_school_european_history": 1.0,
+    "mmlu_high_school_geography": 1.0,
+    "mmlu_high_school_government_and_politics": 1.0,
+    "mmlu_high_school_macroeconomics": 1.0,
+    "mmlu_high_school_mathematics": 1.0,
+    "mmlu_high_school_microeconomics": 1.0,
+    "mmlu_high_school_physics": 1.0,
+    "mmlu_high_school_psychology": 1.0,
+    "mmlu_high_school_statistics": 1.0,
+    "mmlu_high_school_us_history": 1.0,
+    "mmlu_high_school_world_history": 1.0,
+    "mmlu_human_aging": 1.0,
+    "mmlu_human_sexuality": 1.0,
+    "mmlu_humanities": 2,
+    "mmlu_international_law": 1.0,
+    "mmlu_jurisprudence": 1.0,
+    "mmlu_logical_fallacies": 1.0,
+    "mmlu_machine_learning": 1.0,
+    "mmlu_management": 1.0,
+    "mmlu_marketing": 1.0,
+    "mmlu_medical_genetics": 1.0,
+    "mmlu_miscellaneous": 1.0,
+    "mmlu_moral_disputes": 1.0,
+    "mmlu_moral_scenarios": 1.0,
+    "mmlu_nutrition": 1.0,
+    "mmlu_other": 2,
+    "mmlu_philosophy": 1.0,
+    "mmlu_prehistory": 1.0,
+    "mmlu_professional_accounting": 1.0,
+    "mmlu_professional_law": 1.0,
+    "mmlu_professional_medicine": 1.0,
+    "mmlu_professional_psychology": 1.0,
+    "mmlu_public_relations": 1.0,
+    "mmlu_security_studies": 1.0,
+    "mmlu_social_sciences": 2,
+    "mmlu_sociology": 1.0,
+    "mmlu_stem": 2,
+    "mmlu_us_foreign_policy": 1.0,
+    "mmlu_virology": 1.0,
+    "mmlu_world_religions": 1.0
+  },
+  "n-shot": {
+    "mathqa": 0
+  },
+  "higher_is_better": {
+    "mathqa": {
+      "acc": true,
+      "acc_norm": true
+    }
+  },
+  "n-samples": {
+    "mathqa": {
+      "original": 2985,
+      "effective": 10
+    }
+  },
+  "samples": {
+    "mathqa": [
+      {
+        "doc_id": 0,
+        "doc": {
+          "Problem": "a shopkeeper sold an article offering a discount of 5 % and earned a profit of 31.1 % . what would have been the percentage of profit earned if no discount had been offered ?",
+          "Rationale": "\"giving no discount to customer implies selling the product on printed price . suppose the cost price of the article is 100 . then printed price = 100 \u00e3 \u2014 ( 100 + 31.1 ) / ( 100 \u00e2 \u02c6 \u2019 5 ) = 138 hence , required % profit = 138 \u00e2 \u20ac \u201c 100 = 38 % answer a\"",
+          "options": "a ) 38 , b ) 27.675 , c ) 30 , d ) data inadequate , e ) none of these",
+          "correct": "a",
+          "annotated_formula": "subtract(divide(multiply(add(const_100, 31.1), const_100), subtract(const_100, 5)), const_100)",
+          "linear_formula": "add(n1,const_100)|subtract(const_100,n0)|multiply(#0,const_100)|divide(#2,#1)|subtract(#3,const_100)|",
+          "category": "gain"
+        },
+        "target": 0,
+        "arguments": [
+          [
+            "Question: a shopkeeper sold an article offering a discount of 5 % and earned a profit of 31.1 % . what would have been the percentage of profit earned if no discount had been offered ?\nAnswer:",
+            " 38"
+          ],
+          [
+            "Question: a shopkeeper sold an article offering a discount of 5 % and earned a profit of 31.1 % . what would have been the percentage of profit earned if no discount had been offered ?\nAnswer:",
+            " 27.675"
+          ],
+          [
+            "Question: a shopkeeper sold an article offering a discount of 5 % and earned a profit of 31.1 % . what would have been the percentage of profit earned if no discount had been offered ?\nAnswer:",
+            " 30"
+          ],
+          [
+            "Question: a shopkeeper sold an article offering a discount of 5 % and earned a profit of 31.1 % . what would have been the percentage of profit earned if no discount had been offered ?\nAnswer:",
+            " data inadequate"
+          ],
+          [
+            "Question: a shopkeeper sold an article offering a discount of 5 % and earned a profit of 31.1 % . what would have been the percentage of profit earned if no discount had been offered ?\nAnswer:",
+            " none of these"
+          ]
+        ],
+        "resps": [
+          [
+            [
+              -7.690975189208984,
+              false
+            ]
+          ],
+          [
+            [
+              -18.74765968322754,
+              false
+            ]
+          ],
+          [
+            [
+              -7.469038009643555,
+              false
+            ]
+          ],
+          [
+            [
+              -16.065353393554688,
+              false
+            ]
+          ],
+          [
+            [
+              -14.02497386932373,
+              false
+            ]
+          ]
+        ],
+        "filtered_resps": [
+          [
+            -7.690975189208984,
+            false
+          ],
+          [
+            -18.74765968322754,
+            false
+          ],
+          [
+            -7.469038009643555,
+            false
+          ],
+          [
+            -16.065353393554688,
+            false
+          ],
+          [
+            -14.02497386932373,
+            false
+          ]
+        ],
+        "filter": "none",
+        "metrics": [
+          "acc",
+          "acc_norm"
+        ],
+        "doc_hash": "00b2abd2156c1edcab7b0a3820d2dc4c336cd56d18b6801ed7c7231133b583e0",
+        "prompt_hash": "082f01c2164d4fced654ebdabbcad90be4ea4f2487052049d9f2cff7b58271c1",
+        "target_hash": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "acc": 0.0,
+        "acc_norm": 0.0
+      },
+      {
+        "doc_id": 1,
+        "doc": {
+          "Problem": "what will be the difference between simple and compound interest at 14 % per annum on a sum of rs . 1000 after 4 years ?",
+          "Rationale": "\"s . i . = ( 1000 * 14 * 4 ) / 100 = rs . 560 c . i . = [ 1000 * ( 1 + 14 / 100 ) 4 - 1000 ] = rs . 689 difference = ( 689 - 560 ) = rs . 129 answer : a\"",
+          "options": "a ) 129 , b ) 130 , c ) 124 , d ) 133 , e ) 145",
+          "correct": "a",
+          "annotated_formula": "subtract(subtract(multiply(1000, power(add(divide(14, const_100), const_1), 4)), 1000), multiply(multiply(1000, divide(14, const_100)), 4))",
+          "linear_formula": "divide(n0,const_100)|add(#0,const_1)|multiply(n1,#0)|multiply(n2,#2)|power(#1,n2)|multiply(n1,#4)|subtract(#5,n1)|subtract(#6,#3)|",
+          "category": "gain"
+        },
+        "target": 0,
+        "arguments": [
+          [
+            "Question: what will be the difference between simple and compound interest at 14 % per annum on a sum of rs . 1000 after 4 years ?\nAnswer:",
+            " 129"
+          ],
+          [
+            "Question: what will be the difference between simple and compound interest at 14 % per annum on a sum of rs . 1000 after 4 years ?\nAnswer:",
+            " 130"
+          ],
+          [
+            "Question: what will be the difference between simple and compound interest at 14 % per annum on a sum of rs . 1000 after 4 years ?\nAnswer:",
+            " 124"
+          ],
+          [
+            "Question: what will be the difference between simple and compound interest at 14 % per annum on a sum of rs . 1000 after 4 years ?\nAnswer:",
+            " 133"
+          ],
+          [
+            "Question: what will be the difference between simple and compound interest at 14 % per annum on a sum of rs . 1000 after 4 years ?\nAnswer:",
+            " 145"
+          ]
+        ],
+        "resps": [
+          [
+            [
+              -12.904948234558105,
+              false
+            ]
+          ],
+          [
+            [
+              -12.352176666259766,
+              false
+            ]
+          ],
+          [
+            [
+              -10.83006477355957,
+              false
+            ]
+          ],
+          [
+            [
+              -12.118738174438477,
+              false
+            ]
+          ],
+          [
+            [
+              -12.52117919921875,
+              false
+            ]
+          ]
+        ],
+        "filtered_resps": [
+          [
+            -12.904948234558105,
+            false
+          ],
+          [
+            -12.352176666259766,
+            false
+          ],
+          [
+            -10.83006477355957,
+            false
+          ],
+          [
+            -12.118738174438477,
+            false
+          ],
+          [
+            -12.52117919921875,
+            false
+          ]
+        ],
+        "filter": "none",
+        "metrics": [
+          "acc",
+          "acc_norm"
+        ],
+        "doc_hash": "ea58ce09d1b40ef038e76ae9144ba55b942c83e8f89fce3d4f3740f9e5eda152",
+        "prompt_hash": "c3cef1b189e4c6a9da88387631b58a7833ca0c2239709c7f750eb3c1b158254e",
+        "target_hash": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "acc": 0.0,
+        "acc_norm": 0.0
+      },
+      {
+        "doc_id": 2,
+        "doc": {
+          "Problem": "there are 28 stations between hyderabad and bangalore . how many second class tickets have to be printed , so that a passenger can travel from any station to any other station ?",
+          "Rationale": "\"the total number of stations = 30 from 30 stations we have to choose any two stations and the direction of travel ( i . e . , hyderabad to bangalore is different from bangalore to hyderabad ) in 3 \u2070 p \u2082 ways . 30 p \u2082 = 30 * 29 = 870 . answer : c\"",
+          "options": "a ) 156 , b ) 167 , c ) 870 , d ) 352 , e ) 380",
+          "correct": "c",
+          "annotated_formula": "multiply(add(28, const_1), add(add(28, const_1), const_1))",
+          "linear_formula": "add(n0,const_1)|add(#0,const_1)|multiply(#0,#1)|",
+          "category": "physics"
+        },
+        "target": 2,
+        "arguments": [
+          [
+            "Question: there are 28 stations between hyderabad and bangalore . how many second class tickets have to be printed , so that a passenger can travel from any station to any other station ?\nAnswer:",
+            " 156"
+          ],
+          [
+            "Question: there are 28 stations between hyderabad and bangalore . how many second class tickets have to be printed , so that a passenger can travel from any station to any other station ?\nAnswer:",
+            " 167"
+          ],
+          [
+            "Question: there are 28 stations between hyderabad and bangalore . how many second class tickets have to be printed , so that a passenger can travel from any station to any other station ?\nAnswer:",
+            " 870"
+          ],
+          [
+            "Question: there are 28 stations between hyderabad and bangalore . how many second class tickets have to be printed , so that a passenger can travel from any station to any other station ?\nAnswer:",
+            " 352"
+          ],
+          [
+            "Question: there are 28 stations between hyderabad and bangalore . how many second class tickets have to be printed , so that a passenger can travel from any station to any other station ?\nAnswer:",
+            " 380"
+          ]
+        ],
+        "resps": [
+          [
+            [
+              -6.573269844055176,
+              false
+            ]
+          ],
+          [
+            [
+              -8.995174407958984,
+              false
+            ]
+          ],
+          [
+            [
+              -11.439838409423828,
+              false
+            ]
+          ],
+          [
+            [
+              -7.488254547119141,
+              false
+            ]
+          ],
+          [
+            [
+              -9.643159866333008,
+              false
+            ]
+          ]
+        ],
+        "filtered_resps": [
+          [
+            -6.573269844055176,
+            false
+          ],
+          [
+            -8.995174407958984,
+            false
+          ],
+          [
+            -11.439838409423828,
+            false
+          ],
+          [
+            -7.488254547119141,
+            false
+          ],
+          [
+            -9.643159866333008,
+            false
+          ]
+        ],
+        "filter": "none",
+        "metrics": [
+          "acc",
+          "acc_norm"
+        ],
+        "doc_hash": "256bc777435054046e5fb9df04be3d87a8d9ca0dc4a678f7e991e903ad4b4790",
+        "prompt_hash": "df6eb6fe4c7e07fa53f4e151d8e53a6f673d7b4598ac0b7bae29846305c3f71e",
+        "target_hash": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "acc": 0.0,
+        "acc_norm": 0.0
+      },
+      {
+        "doc_id": 3,
+        "doc": {
+          "Problem": "the present population of a town is 3888 . population increase rate is 20 % p . a . find the population of town before 2 years ?",
+          "Rationale": "\"p = 3888 r = 20 % required population of town = p / ( 1 + r / 100 ) ^ t = 3888 / ( 1 + 20 / 100 ) ^ 2 = 3888 / ( 6 / 5 ) ^ 2 = 2700 ( approximately ) answer is e\"",
+          "options": "a ) 2500 , b ) 2100 , c ) 3500 , d ) 3600 , e ) 2700",
+          "correct": "e",
+          "annotated_formula": "add(3888, divide(multiply(3888, 20), const_100))",
+          "linear_formula": "multiply(n0,n1)|divide(#0,const_100)|add(n0,#1)|",
+          "category": "gain"
+        },
+        "target": 4,
+        "arguments": [
+          [
+            "Question: the present population of a town is 3888 . population increase rate is 20 % p . a . find the population of town before 2 years ?\nAnswer:",
+            " 2500"
+          ],
+          [
+            "Question: the present population of a town is 3888 . population increase rate is 20 % p . a . find the population of town before 2 years ?\nAnswer:",
+            " 2100"
+          ],
+          [
+            "Question: the present population of a town is 3888 . population increase rate is 20 % p . a . find the population of town before 2 years ?\nAnswer:",
+            " 3500"
+          ],
+          [
+            "Question: the present population of a town is 3888 . population increase rate is 20 % p . a . find the population of town before 2 years ?\nAnswer:",
+            " 3600"
+          ],
+          [
+            "Question: the present population of a town is 3888 . population increase rate is 20 % p . a . find the population of town before 2 years ?\nAnswer:",
+            " 2700"
+          ]
+        ],
+        "resps": [
+          [
+            [
+              -9.802261352539062,
+              false
+            ]
+          ],
+          [
+            [
+              -11.546785354614258,
+              false
+            ]
+          ],
+          [
+            [
+              -7.95795202255249,
+              false
+            ]
+          ],
+          [
+            [
+              -6.854341506958008,
+              false
+            ]
+          ],
+          [
+            [
+              -10.168546676635742,
+              false
+            ]
+          ]
+        ],
+        "filtered_resps": [
+          [
+            -9.802261352539062,
+            false
+          ],
+          [
+            -11.546785354614258,
+            false
+          ],
+          [
+            -7.95795202255249,
+            false
+          ],
+          [
+            -6.854341506958008,
+            false
+          ],
+          [
+            -10.168546676635742,
+            false
+          ]
+        ],
+        "filter": "none",
+        "metrics": [
+          "acc",
+          "acc_norm"
+        ],
+        "doc_hash": "53b8ac0969744912c79b48c19125b0dbcb57ab42e10b634c75007dc3ead895da",
+        "prompt_hash": "1ea1c7d67fae2f2ed4d9e5dad09e1d708ac7a3ef5811a2e1eb3b9e791fab00e8",
+        "target_hash": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+        "acc": 0.0,
+        "acc_norm": 0.0
+      },
+      {
+        "doc_id": 4,
+        "doc": {
+          "Problem": "the triplicate ratio of 1 : 9 is ?",
+          "Rationale": "\"13 : 93 = 1 : 729 answer : e\"",
+          "options": "a ) 1 : 0 , b ) 1 : 8 , c ) 1 : 7 , d ) 1 : 2 , e ) 1 : 729",
+          "correct": "e",
+          "annotated_formula": "divide(power(const_2.0, 9), power(const_3.0, 9))",
+          "linear_formula": "power(const_2.0,n1)|power(const_3.0,n1)|divide(#0,#1)|",
+          "category": "other"
+        },
+        "target": 4,
+        "arguments": [
+          [
+            "Question: the triplicate ratio of 1 : 9 is ?\nAnswer:",
+            " 1 : 0"
+          ],
+          [
+            "Question: the triplicate ratio of 1 : 9 is ?\nAnswer:",
+            " 1 : 8"
+          ],
+          [
+            "Question: the triplicate ratio of 1 : 9 is ?\nAnswer:",
+            " 1 : 7"
+          ],
+          [
+            "Question: the triplicate ratio of 1 : 9 is ?\nAnswer:",
+            " 1 : 2"
+          ],
+          [
+            "Question: the triplicate ratio of 1 : 9 is ?\nAnswer:",
+            " 1 : 729"
+          ]
+        ],
+        "resps": [
+          [
+            [
+              -10.771842002868652,
+              false
+            ]
+          ],
+          [
+            [
+              -6.261142730712891,
+              false
+            ]
+          ],
+          [
+            [
+              -7.654186248779297,
+              false
+            ]
+          ],
+          [
+            [
+              -7.936805725097656,
+              false
+            ]
+          ],
+          [
+            [
+              -6.258806228637695,
+              false
+            ]
+          ]
+        ],
+        "filtered_resps": [
+          [
+            -10.771842002868652,
+            false
+          ],
+          [
+            -6.261142730712891,
+            false
+          ],
+          [
+            -7.654186248779297,
+            false
+          ],
+          [
+            -7.936805725097656,
+            false
+          ],
+          [
+            -6.258806228637695,
+            false
+          ]
+        ],
+        "filter": "none",
+        "metrics": [
+          "acc",
+          "acc_norm"
+        ],
+        "doc_hash": "1ef8ca79cd1d877218411330fb9c7240b30582ed55659da8aed6ce4d73465dea",
+        "prompt_hash": "b9cfbb5223f01a9a8e39071ae71cbcddaee18e83c448c9009aa888214ab61094",
+        "target_hash": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+        "acc": 1.0,
+        "acc_norm": 1.0
+      },
+      {
+        "doc_id": 5,
+        "doc": {
+          "Problem": "the sum of all the integers s such that - 26 < s < 24 is",
+          "Rationale": "\"easy one - - 25 , - 24 , - 23 , - 22 , . . . . . . - 1,0 , 1 , 2 . . . . , 22 , 23 cancel everyhitng and we ' re left with - - 25 and - 24 s = - 49 . d is the answer .\"",
+          "options": "a ) 0 , b ) - 2 , c ) - 25 , d ) - 49 , e ) - 51",
+          "correct": "d",
+          "annotated_formula": "add(add(negate(26), const_1), add(add(negate(26), const_1), const_1))",
+          "linear_formula": "negate(n0)|add(#0,const_1)|add(#1,const_1)|add(#1,#2)|",
+          "category": "general"
+        },
+        "target": 3,
+        "arguments": [
+          [
+            "Question: the sum of all the integers s such that - 26 < s < 24 is\nAnswer:",
+            " 0"
+          ],
+          [
+            "Question: the sum of all the integers s such that - 26 < s < 24 is\nAnswer:",
+            " - 2"
+          ],
+          [
+            "Question: the sum of all the integers s such that - 26 < s < 24 is\nAnswer:",
+            " - 25"
+          ],
+          [
+            "Question: the sum of all the integers s such that - 26 < s < 24 is\nAnswer:",
+            " - 49"
+          ],
+          [
+            "Question: the sum of all the integers s such that - 26 < s < 24 is\nAnswer:",
+            " - 51"
+          ]
+        ],
+        "resps": [
+          [
+            [
+              -1.773301362991333,
+              false
+            ]
+          ],
+          [
+            [
+              -8.668371200561523,
+              false
+            ]
+          ],
+          [
+            [
+              -11.156760215759277,
+              false
+            ]
+          ],
+          [
+            [
+              -12.401719093322754,
+              false
+            ]
+          ],
+          [
+            [
+              -11.115344047546387,
+              false
+            ]
+          ]
+        ],
+        "filtered_resps": [
+          [
+            -1.773301362991333,
+            false
+          ],
+          [
+            -8.668371200561523,
+            false
+          ],
+          [
+            -11.156760215759277,
+            false
+          ],
+          [
+            -12.401719093322754,
+            false
+          ],
+          [
+            -11.115344047546387,
+            false
+          ]
+        ],
+        "filter": "none",
+        "metrics": [
+          "acc",
+          "acc_norm"
+        ],
+        "doc_hash": "3ffb638ed25876f54de93dc8f607aaaca1bf7bbf0e92f11598685e45613d5e94",
+        "prompt_hash": "879bf638b25e171448c4b619a4e2220695c0b96b17003732ac55f20d28342975",
+        "target_hash": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+        "acc": 0.0,
+        "acc_norm": 0.0
+      },
+      {
+        "doc_id": 6,
+        "doc": {
+          "Problem": "a full stationary oil tank that is a right circular cylinder has a radius of 100 feet and a height of 25 feet . oil is pumped from the stationary tank to an oil truck that has a tank that is a right circular cylinder until the truck ' s tank is completely filled . if the truck ' s tank has a radius of 6 feet and a height of 10 feet , how far ( in feet ) did the oil level drop in the stationary tank ?",
+          "Rationale": "\"the volume of oil pumped to the tank = the volume of oil taken away from stationary cylinder . pi * 36 * 10 = pi * h * 100 * 100 ( h is distance that the oil level dropped ) h = 360 / 10,000 = 36 / 1000 = 0.036 ft the answer is a .\"",
+          "options": "a ) 0.036 , b ) 0.36 , c ) 0.6 , d ) 6 , e ) 3.6",
+          "correct": "a",
+          "annotated_formula": "divide(volume_cylinder(6, 10), circle_area(100))",
+          "linear_formula": "circle_area(n0)|volume_cylinder(n2,n3)|divide(#1,#0)|",
+          "category": "geometry"
+        },
+        "target": 0,
+        "arguments": [
+          [
+            "Question: a full stationary oil tank that is a right circular cylinder has a radius of 100 feet and a height of 25 feet . oil is pumped from the stationary tank to an oil truck that has a tank that is a right circular cylinder until the truck ' s tank is completely filled . if the truck ' s tank has a radius of 6 feet and a height of 10 feet , how far ( in feet ) did the oil level drop in the stationary tank ?\nAnswer:",
+            " 0.036"
+          ],
+          [
+            "Question: a full stationary oil tank that is a right circular cylinder has a radius of 100 feet and a height of 25 feet . oil is pumped from the stationary tank to an oil truck that has a tank that is a right circular cylinder until the truck ' s tank is completely filled . if the truck ' s tank has a radius of 6 feet and a height of 10 feet , how far ( in feet ) did the oil level drop in the stationary tank ?\nAnswer:",
+            " 0.36"
+          ],
+          [
+            "Question: a full stationary oil tank that is a right circular cylinder has a radius of 100 feet and a height of 25 feet . oil is pumped from the stationary tank to an oil truck that has a tank that is a right circular cylinder until the truck ' s tank is completely filled . if the truck ' s tank has a radius of 6 feet and a height of 10 feet , how far ( in feet ) did the oil level drop in the stationary tank ?\nAnswer:",
+            " 0.6"
+          ],
+          [
+            "Question: a full stationary oil tank that is a right circular cylinder has a radius of 100 feet and a height of 25 feet . oil is pumped from the stationary tank to an oil truck that has a tank that is a right circular cylinder until the truck ' s tank is completely filled . if the truck ' s tank has a radius of 6 feet and a height of 10 feet , how far ( in feet ) did the oil level drop in the stationary tank ?\nAnswer:",
+            " 6"
+          ],
+          [
+            "Question: a full stationary oil tank that is a right circular cylinder has a radius of 100 feet and a height of 25 feet . oil is pumped from the stationary tank to an oil truck that has a tank that is a right circular cylinder until the truck ' s tank is completely filled . if the truck ' s tank has a radius of 6 feet and a height of 10 feet , how far ( in feet ) did the oil level drop in the stationary tank ?\nAnswer:",
+            " 3.6"
+          ]
+        ],
+        "resps": [
+          [
+            [
+              -13.081501960754395,
+              false
+            ]
+          ],
+          [
+            [
+              -13.460980415344238,
+              false
+            ]
+          ],
+          [
+            [
+              -10.9561185836792,
+              false
+            ]
+          ],
+          [
+            [
+              -6.129976272583008,
+              false
+            ]
+          ],
+          [
+            [
+              -9.075982093811035,
+              false
+            ]
+          ]
+        ],
+        "filtered_resps": [
+          [
+            -13.081501960754395,
+            false
+          ],
+          [
+            -13.460980415344238,
+            false
+          ],
+          [
+            -10.9561185836792,
+            false
+          ],
+          [
+            -6.129976272583008,
+            false
+          ],
+          [
+            -9.075982093811035,
+            false
+          ]
+        ],
+        "filter": "none",
+        "metrics": [
+          "acc",
+          "acc_norm"
+        ],
+        "doc_hash": "df99a315f1d81c7fed28756e7f13219c5e29ea98732e7501dc2bfb359e5bf559",
+        "prompt_hash": "e217c0a21b910164873c6476caf8ed1e83ea16fef96a110ddc0d5dddba6298cd",
+        "target_hash": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "acc": 0.0,
+        "acc_norm": 1.0
+      },
+      {
+        "doc_id": 7,
+        "doc": {
+          "Problem": "each week a restaurant serving mexican food uses the same volume of chili paste , which comes in either 35 - ounce cans or 25 - ounce cans of chili paste . if the restaurant must order 20 more of the smaller cans than the larger cans to fulfill its weekly needs , then how manysmallercans are required to fulfill its weekly needs ?",
+          "Rationale": "\"let x be the number of 35 ounce cans . therefore ( x + 20 ) is the number of 25 ounce cans . total volume is same , therefore 35 x = 25 ( x + 20 ) 10 x = 500 x = 50 therefore , number of 15 ounce cans = 50 + 20 = 70 ans - b\"",
+          "options": "a ) 60 , b ) 70 , c ) 80 , d ) 100 , e ) 120",
+          "correct": "b",
+          "annotated_formula": "add(25, 20)",
+          "linear_formula": "add(n1,n2)|",
+          "category": "general"
+        },
+        "target": 1,
+        "arguments": [
+          [
+            "Question: each week a restaurant serving mexican food uses the same volume of chili paste , which comes in either 35 - ounce cans or 25 - ounce cans of chili paste . if the restaurant must order 20 more of the smaller cans than the larger cans to fulfill its weekly needs , then how manysmallercans are required to fulfill its weekly needs ?\nAnswer:",
+            " 60"
+          ],
+          [
+            "Question: each week a restaurant serving mexican food uses the same volume of chili paste , which comes in either 35 - ounce cans or 25 - ounce cans of chili paste . if the restaurant must order 20 more of the smaller cans than the larger cans to fulfill its weekly needs , then how manysmallercans are required to fulfill its weekly needs ?\nAnswer:",
+            " 70"
+          ],
+          [
+            "Question: each week a restaurant serving mexican food uses the same volume of chili paste , which comes in either 35 - ounce cans or 25 - ounce cans of chili paste . if the restaurant must order 20 more of the smaller cans than the larger cans to fulfill its weekly needs , then how manysmallercans are required to fulfill its weekly needs ?\nAnswer:",
+            " 80"
+          ],
+          [
+            "Question: each week a restaurant serving mexican food uses the same volume of chili paste , which comes in either 35 - ounce cans or 25 - ounce cans of chili paste . if the restaurant must order 20 more of the smaller cans than the larger cans to fulfill its weekly needs , then how manysmallercans are required to fulfill its weekly needs ?\nAnswer:",
+            " 100"
+          ],
+          [
+            "Question: each week a restaurant serving mexican food uses the same volume of chili paste , which comes in either 35 - ounce cans or 25 - ounce cans of chili paste . if the restaurant must order 20 more of the smaller cans than the larger cans to fulfill its weekly needs , then how manysmallercans are required to fulfill its weekly needs ?\nAnswer:",
+            " 120"
+          ]
+        ],
+        "resps": [
+          [
+            [
+              -7.535373210906982,
+              false
+            ]
+          ],
+          [
+            [
+              -9.223252296447754,
+              false
+            ]
+          ],
+          [
+            [
+              -9.173704147338867,
+              false
+            ]
+          ],
+          [
+            [
+              -8.491430282592773,
+              false
+            ]
+          ],
+          [
+            [
+              -10.577354431152344,
+              false
+            ]
+          ]
+        ],
+        "filtered_resps": [
+          [
+            -7.535373210906982,
+            false
+          ],
+          [
+            -9.223252296447754,
+            false
+          ],
+          [
+            -9.173704147338867,
+            false
+          ],
+          [
+            -8.491430282592773,
+            false
+          ],
+          [
+            -10.577354431152344,
+            false
+          ]
+        ],
+        "filter": "none",
+        "metrics": [
+          "acc",
+          "acc_norm"
+        ],
+        "doc_hash": "66f5ac1c0282e58112600d02c8985383b6cec84eb19a9464711cb9c188a168ee",
+        "prompt_hash": "c379b2bd017ee65a45727a2aeb0e0b73c0939a2165b8b26f95a011587833b5c0",
+        "target_hash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "acc": 0.0,
+        "acc_norm": 0.0
+      },
+      {
+        "doc_id": 8,
+        "doc": {
+          "Problem": "if n is an integer and 101 n ^ 2 is less than or equal to 10000 , what is the greatest possible value of n ?",
+          "Rationale": "\"101 * n ^ 2 < = 10000 n ^ 2 < = 10000 / 101 which will be less than 100 since 10000 / 100 = 100 which is the square of 9 next closest value of n where n ^ 2 < = 100 is 9 ans c\"",
+          "options": "a ) 7 , b ) 8 , c ) 9 , d ) 10 , e ) 11",
+          "correct": "c",
+          "annotated_formula": "floor(sqrt(divide(10000, 101)))",
+          "linear_formula": "divide(n2,n0)|sqrt(#0)|floor(#1)|",
+          "category": "general"
+        },
+        "target": 2,
+        "arguments": [
+          [
+            "Question: if n is an integer and 101 n ^ 2 is less than or equal to 10000 , what is the greatest possible value of n ?\nAnswer:",
+            " 7"
+          ],
+          [
+            "Question: if n is an integer and 101 n ^ 2 is less than or equal to 10000 , what is the greatest possible value of n ?\nAnswer:",
+            " 8"
+          ],
+          [
+            "Question: if n is an integer and 101 n ^ 2 is less than or equal to 10000 , what is the greatest possible value of n ?\nAnswer:",
+            " 9"
+          ],
+          [
+            "Question: if n is an integer and 101 n ^ 2 is less than or equal to 10000 , what is the greatest possible value of n ?\nAnswer:",
+            " 10"
+          ],
+          [
+            "Question: if n is an integer and 101 n ^ 2 is less than or equal to 10000 , what is the greatest possible value of n ?\nAnswer:",
+            " 11"
+          ]
+        ],
+        "resps": [
+          [
+            [
+              -9.564474105834961,
+              false
+            ]
+          ],
+          [
+            [
+              -10.254754066467285,
+              false
+            ]
+          ],
+          [
+            [
+              -9.329780578613281,
+              false
+            ]
+          ],
+          [
+            [
+              -2.980928421020508,
+              false
+            ]
+          ],
+          [
+            [
+              -8.21939468383789,
+              false
+            ]
+          ]
+        ],
+        "filtered_resps": [
+          [
+            -9.564474105834961,
+            false
+          ],
+          [
+            -10.254754066467285,
+            false
+          ],
+          [
+            -9.329780578613281,
+            false
+          ],
+          [
+            -2.980928421020508,
+            false
+          ],
+          [
+            -8.21939468383789,
+            false
+          ]
+        ],
+        "filter": "none",
+        "metrics": [
+          "acc",
+          "acc_norm"
+        ],
+        "doc_hash": "29e1f79dc288d022f8e3d77bbf138db3ea40cee2894ace1813a56edf14b6d516",
+        "prompt_hash": "de5351c73cc76f71364c58681838e2503fd3801428f7eee1d6211bd2ae5d40e3",
+        "target_hash": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "acc": 0.0,
+        "acc_norm": 0.0
+      },
+      {
+        "doc_id": 9,
+        "doc": {
+          "Problem": "a constructor estimates that 10 people can paint mr khans house in 4 days . if he uses 5 people instead of 10 , how long will they take to complete the job ?",
+          "Rationale": "\"explanation : use formula for a work members \u00e3 \u2014 days = constant 10 \u00e3 \u2014 4 = 5 \u00e3 \u2014 a a = 8 so answer is 8 days answer : d\"",
+          "options": "a ) 10 , b ) 4 , c ) 5 , d ) 8 , e ) 6",
+          "correct": "d",
+          "annotated_formula": "divide(const_1, multiply(divide(const_1, multiply(const_4.0, 10)), 4))",
+          "linear_formula": "multiply(n0,n1)|divide(const_1,#0)|multiply(n2,#1)|divide(const_1,#2)|",
+          "category": "physics"
+        },
+        "target": 3,
+        "arguments": [
+          [
+            "Question: a constructor estimates that 10 people can paint mr khans house in 4 days . if he uses 5 people instead of 10 , how long will they take to complete the job ?\nAnswer:",
+            " 10"
+          ],
+          [
+            "Question: a constructor estimates that 10 people can paint mr khans house in 4 days . if he uses 5 people instead of 10 , how long will they take to complete the job ?\nAnswer:",
+            " 4"
+          ],
+          [
+            "Question: a constructor estimates that 10 people can paint mr khans house in 4 days . if he uses 5 people instead of 10 , how long will they take to complete the job ?\nAnswer:",
+            " 5"
+          ],
+          [
+            "Question: a constructor estimates that 10 people can paint mr khans house in 4 days . if he uses 5 people instead of 10 , how long will they take to complete the job ?\nAnswer:",
+            " 8"
+          ],
+          [
+            "Question: a constructor estimates that 10 people can paint mr khans house in 4 days . if he uses 5 people instead of 10 , how long will they take to complete the job ?\nAnswer:",
+            " 6"
+          ]
+        ],
+        "resps": [
+          [
+            [
+              -11.645419120788574,
+              false
+            ]
+          ],
+          [
+            [
+              -7.305080413818359,
+              false
+            ]
+          ],
+          [
+            [
+              -10.115777969360352,
+              false
+            ]
+          ],
+          [
+            [
+              -7.818449020385742,
+              false
+            ]
+          ],
+          [
+            [
+              -7.616476058959961,
+              false
+            ]
+          ]
+        ],
+        "filtered_resps": [
+          [
+            -11.645419120788574,
+            false
+          ],
+          [
+            -7.305080413818359,
+            false
+          ],
+          [
+            -10.115777969360352,
+            false
+          ],
+          [
+            -7.818449020385742,
+            false
+          ],
+          [
+            -7.616476058959961,
+            false
+          ]
+        ],
+        "filter": "none",
+        "metrics": [
+          "acc",
+          "acc_norm"
+        ],
+        "doc_hash": "509ebe18186c68e46f58eb837df47c18cde8eabd450d304bfe87d642f31b4d2d",
+        "prompt_hash": "1e49e7b4af4e9bad3a084ac8d7db76da512c4d2cf355b10649e2fe25dc4e93f8",
+        "target_hash": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+        "acc": 0.0,
+        "acc_norm": 0.0
+      }
+    ]
+  },
+  "config": {
+    "model": "hf",
+    "model_args": "pretrained=ibm-granite/granite-4.0-350M,tokenizer=ibm-granite/granite-4.0-350M,dtype=float32,trust_remote_code=True",
+    "model_num_parameters": 352379904,
+    "model_dtype": "torch.float32",
+    "model_revision": "main",
+    "model_sha": "bd8a1497065c0d6ba1ef19af6b0d2b14bacf71c2",
+    "batch_size": 2,
+    "batch_sizes": [],
+    "device": "cuda",
+    "use_cache": null,
+    "limit": 10,
+    "bootstrap_iters": 100000,
+    "gen_kwargs": null,
+    "random_seed": 0,
+    "numpy_seed": 1234,
+    "torch_seed": 1234,
+    "fewshot_seed": 1234
+  },
+  "git_hash": "8cd0d0e",
+  "date": 1764410674.366187,
+  "pretty_env_info": "PyTorch version: 2.9.1+cu130\nIs debug build: False\nCUDA used to build PyTorch: 13.0\nROCM used to build PyTorch: N/A\n\nOS: Ubuntu 24.04.3 LTS (aarch64)\nGCC version: (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nClang version: Could not collect\nCMake version: version 3.28.3\nLibc version: glibc-2.39\n\nPython version: 3.12.3 (main, Nov  6 2025, 13:44:16) [GCC 13.3.0] (64-bit runtime)\nPython platform: Linux-6.14.0-1013-nvidia-aarch64-with-glibc2.39\nIs CUDA available: True\nCUDA runtime version: Could not collect\nCUDA_MODULE_LOADING set to: \nGPU models and configuration: GPU 0: NVIDIA GB10\nNvidia driver version: 580.95.05\ncuDNN version: Could not collect\nIs XPU available: False\nHIP runtime version: N/A\nMIOpen runtime version: N/A\nIs XNNPACK available: True\n\nCPU:\nArchitecture:                            aarch64\nCPU op-mode(s):                          64-bit\nByte Order:                              Little Endian\nCPU(s):                                  20\nOn-line CPU(s) list:                     0-19\nVendor ID:                               ARM\nModel name:                              Cortex-X925\nModel:                                   1\nThread(s) per core:                      1\nCore(s) per socket:                      10\nSocket(s):                               1\nStepping:                                r0p1\nCPU(s) scaling MHz:                      93%\nCPU max MHz:                             4004.0000\nCPU min MHz:                             1378.0000\nBogoMIPS:                                2000.00\nFlags:                                   fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm sb paca pacg dcpodp sve2 sveaes svepmull svebitperm svesha3 svesm4 flagm2 frint svei8mm svebf16 i8mm bf16 dgh bti ecv afp wfxt\nModel name:                              Cortex-A725\nModel:                                   1\nThread(s) per core:                      1\nCore(s) per socket:                      10\nSocket(s):                               1\nStepping:                                r0p1\nCPU(s) scaling MHz:                      113%\nCPU max MHz:                             2860.0000\nCPU min MHz:                             338.0000\nBogoMIPS:                                2000.00\nFlags:                                   fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm sb paca pacg dcpodp sve2 sveaes svepmull svebitperm svesha3 svesm4 flagm2 frint svei8mm svebf16 i8mm bf16 dgh bti ecv afp wfxt\nL1d cache:                               1.3 MiB (20 instances)\nL1i cache:                               1.3 MiB (20 instances)\nL2 cache:                                25 MiB (20 instances)\nL3 cache:                                24 MiB (2 instances)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-19\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; CSV2, BHB\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n\nVersions of relevant libraries:\n[pip3] mypy_extensions==1.1.0\n[pip3] numpy==2.3.5\n[pip3] nvidia-cublas==13.0.0.19\n[pip3] nvidia-cuda-cupti==13.0.48\n[pip3] nvidia-cuda-nvrtc==13.0.48\n[pip3] nvidia-cuda-runtime==13.0.48\n[pip3] nvidia-cudnn-cu13==9.13.0.50\n[pip3] nvidia-cufft==12.0.0.15\n[pip3] nvidia-curand==10.4.0.35\n[pip3] nvidia-cusolver==12.0.3.29\n[pip3] nvidia-cusparse==12.6.2.49\n[pip3] nvidia-cusparselt-cu13==0.8.0\n[pip3] nvidia-nccl-cu13==2.27.7\n[pip3] nvidia-nvjitlink==13.0.39\n[pip3] nvidia-nvtx==13.0.39\n[pip3] torch==2.9.1+cu130\n[pip3] torchaudio==2.9.0\n[pip3] torchvision==0.24.1\n[pip3] triton==3.5.1\n[conda] Could not collect",
+  "transformers_version": "4.57.1",
+  "lm_eval_version": "0.4.9.1",
+  "upper_git_hash": null,
+  "tokenizer_pad_token": [
+    "<|pad|>",
+    "100256"
+  ],
+  "tokenizer_eos_token": [
+    "<|end_of_text|>",
+    "100257"
+  ],
+  "tokenizer_bos_token": [
+    "<|end_of_text|>",
+    "100257"
+  ],
+  "eot_token_id": 100257,
+  "max_length": 32768,
+  "results": {
+    "mathqa": {
+      "alias": "mathqa",
+      "acc,none": 0.1,
+      "acc_stderr,none": 0.09999999999999999,
+      "acc_norm,none": 0.2,
+      "acc_norm_stderr,none": 0.13333333333333333
+    },
+    "hellaswag": {
+      "alias": "hellaswag",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464,
+      "acc_norm,none": 0.3,
+      "acc_norm_stderr,none": 0.15275252316519464
+    },
+    "piqa": {
+      "alias": "piqa",
+      "acc,none": 0.7,
+      "acc_stderr,none": 0.15275252316519466,
+      "acc_norm,none": 0.8,
+      "acc_norm_stderr,none": 0.13333333333333333
+    },
+    "winogrande": {
+      "alias": "winogrande",
+      "acc,none": 0.8,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu": {
+      "acc,none": 0.3456140350877193,
+      "acc_stderr,none": 0.019994527482197377,
+      "alias": "mmlu"
+    },
+    "mmlu_humanities": {
+      "acc,none": 0.34615384615384615,
+      "acc_stderr,none": 0.04174056563102489,
+      "alias": " - humanities"
+    },
+    "mmlu_formal_logic": {
+      "alias": "  - formal_logic",
+      "acc,none": 0.1,
+      "acc_stderr,none": 0.09999999999999999
+    },
+    "mmlu_high_school_european_history": {
+      "alias": "  - high_school_european_history",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_high_school_us_history": {
+      "alias": "  - high_school_us_history",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_high_school_world_history": {
+      "alias": "  - high_school_world_history",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_international_law": {
+      "alias": "  - international_law",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_jurisprudence": {
+      "alias": "  - jurisprudence",
+      "acc,none": 0.2,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu_logical_fallacies": {
+      "alias": "  - logical_fallacies",
+      "acc,none": 0.1,
+      "acc_stderr,none": 0.09999999999999999
+    },
+    "mmlu_moral_disputes": {
+      "alias": "  - moral_disputes",
+      "acc,none": 0.4,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_moral_scenarios": {
+      "alias": "  - moral_scenarios",
+      "acc,none": 0.2,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu_philosophy": {
+      "alias": "  - philosophy",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_prehistory": {
+      "alias": "  - prehistory",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_professional_law": {
+      "alias": "  - professional_law",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_world_religions": {
+      "alias": "  - world_religions",
+      "acc,none": 0.4,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_other": {
+      "acc,none": 0.3384615384615385,
+      "acc_stderr,none": 0.04134491152973615,
+      "alias": " - other"
+    },
+    "mmlu_business_ethics": {
+      "alias": "  - business_ethics",
+      "acc,none": 0.2,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu_clinical_knowledge": {
+      "alias": "  - clinical_knowledge",
+      "acc,none": 0.4,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_college_medicine": {
+      "alias": "  - college_medicine",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_global_facts": {
+      "alias": "  - global_facts",
+      "acc,none": 0.6,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_human_aging": {
+      "alias": "  - human_aging",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_management": {
+      "alias": "  - management",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_marketing": {
+      "alias": "  - marketing",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_medical_genetics": {
+      "alias": "  - medical_genetics",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_miscellaneous": {
+      "alias": "  - miscellaneous",
+      "acc,none": 0.2,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu_nutrition": {
+      "alias": "  - nutrition",
+      "acc,none": 0.4,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_professional_accounting": {
+      "alias": "  - professional_accounting",
+      "acc,none": 0.1,
+      "acc_stderr,none": 0.09999999999999999
+    },
+    "mmlu_professional_medicine": {
+      "alias": "  - professional_medicine",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_virology": {
+      "alias": "  - virology",
+      "acc,none": 0.1,
+      "acc_stderr,none": 0.09999999999999999
+    },
+    "mmlu_social_sciences": {
+      "acc,none": 0.35,
+      "acc_stderr,none": 0.04356774205932811,
+      "alias": " - social sciences"
+    },
+    "mmlu_econometrics": {
+      "alias": "  - econometrics",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_high_school_geography": {
+      "alias": "  - high_school_geography",
+      "acc,none": 0.2,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu_high_school_government_and_politics": {
+      "alias": "  - high_school_government_and_politics",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_high_school_macroeconomics": {
+      "alias": "  - high_school_macroeconomics",
+      "acc,none": 0.4,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_high_school_microeconomics": {
+      "alias": "  - high_school_microeconomics",
+      "acc,none": 0.0,
+      "acc_stderr,none": 0.0
+    },
+    "mmlu_high_school_psychology": {
+      "alias": "  - high_school_psychology",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_human_sexuality": {
+      "alias": "  - human_sexuality",
+      "acc,none": 0.6,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_professional_psychology": {
+      "alias": "  - professional_psychology",
+      "acc,none": 0.4,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_public_relations": {
+      "alias": "  - public_relations",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_security_studies": {
+      "alias": "  - security_studies",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_sociology": {
+      "alias": "  - sociology",
+      "acc,none": 0.4,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_us_foreign_policy": {
+      "alias": "  - us_foreign_policy",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_stem": {
+      "acc,none": 0.3473684210526316,
+      "acc_stderr,none": 0.03499989007589474,
+      "alias": " - stem"
+    },
+    "mmlu_abstract_algebra": {
+      "alias": "  - abstract_algebra",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_anatomy": {
+      "alias": "  - anatomy",
+      "acc,none": 0.2,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu_astronomy": {
+      "alias": "  - astronomy",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_college_biology": {
+      "alias": "  - college_biology",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_college_chemistry": {
+      "alias": "  - college_chemistry",
+      "acc,none": 0.4,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_college_computer_science": {
+      "alias": "  - college_computer_science",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_college_mathematics": {
+      "alias": "  - college_mathematics",
+      "acc,none": 0.2,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu_college_physics": {
+      "alias": "  - college_physics",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_computer_security": {
+      "alias": "  - computer_security",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_conceptual_physics": {
+      "alias": "  - conceptual_physics",
+      "acc,none": 0.2,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu_electrical_engineering": {
+      "alias": "  - electrical_engineering",
+      "acc,none": 0.6,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_elementary_mathematics": {
+      "alias": "  - elementary_mathematics",
+      "acc,none": 0.2,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu_high_school_biology": {
+      "alias": "  - high_school_biology",
+      "acc,none": 0.6,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_high_school_chemistry": {
+      "alias": "  - high_school_chemistry",
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.16666666666666666
+    },
+    "mmlu_high_school_computer_science": {
+      "alias": "  - high_school_computer_science",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_high_school_mathematics": {
+      "alias": "  - high_school_mathematics",
+      "acc,none": 0.4,
+      "acc_stderr,none": 0.16329931618554522
+    },
+    "mmlu_high_school_physics": {
+      "alias": "  - high_school_physics",
+      "acc,none": 0.2,
+      "acc_stderr,none": 0.13333333333333333
+    },
+    "mmlu_high_school_statistics": {
+      "alias": "  - high_school_statistics",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    },
+    "mmlu_machine_learning": {
+      "alias": "  - machine_learning",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.15275252316519464
+    }
+  }
+}

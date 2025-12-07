@@ -1,0 +1,29 @@
+defaults:
+  - _self_
+  - env: local
+  - driver: inline
+  - app: chatcli
+
+
+# Global settings
+seed: 43
+
+app_name: ${group_choice:app}
+run_name: ${run_name:seed}
+
+device: cpu
+# Supply a real token via environment variable to avoid committing secrets.
+HF_TOKEN: ${oc.env:HF_TOKEN,"hf_fake_token_use_env"}
+
+
+hydra:
+  run:
+    dir: outputs/${app_name}/${run_name}-${now:%Y%m%d}-${now:%H%M%S}
+
+# Logging defaults used across apps and launchers
+logging:
+  log_dir: ${hydra:run.dir}/logs/run.log
+  level: INFO
+
+continuation:
+  enabled: false  # set true to allow apps implementing supports_continuation to save/load state

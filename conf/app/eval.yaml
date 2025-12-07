@@ -1,0 +1,35 @@
+_target_: refrag.framework.apps.eval.EvalApp
+
+model:
+  #name: "ibm-granite/granite-4.0-350M"
+  name: "Qwen/Qwen3-4B-Instruct-2507"
+
+eval:
+  save_dir: ./outputs/eval
+  device: ${device}  # inherit root-level device (cpu/cuda) from conf/config.yaml
+  max_samples: null
+  trust_remote_code: true
+  lm_eval:
+    enabled: true
+    tasks: [mathqa,hellaswag,piqa, winogrande,mmlu ]
+    batch_size: 2
+    limit: 10
+  ragas:
+    enabled: False
+    dataset_path: ./data/ragas_samples.jsonl
+  baselines:
+    enabled: True
+    suite_name: refrag_paper
+    save_dir: ./outputs/baselines
+    accuracy_tasks:  [mathqa,hellaswag,piqa, winogrande,mmlu ]
+    perplexity_tasks: []
+    models: 
+      - name: llama2-7B_full_context
+        display_name: LLaMA2-7B-Full-Context
+        model_id: meta-llama/Llama-2-7b-chat-hf
+      - name: ibm-granite/granite-4.0-350M
+        display_name: Granite-4.0-350M-FC
+        model_id: ibm-granite/granite-4.0-350M
+
+
+     

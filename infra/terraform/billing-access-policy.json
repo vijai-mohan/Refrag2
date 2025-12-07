@@ -1,0 +1,20 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BillingAccess",
+      "Effect": "Allow",
+      "Action": [
+        "aws-portal:ViewBilling",
+        "aws-portal:ViewAccount",
+        "aws-portal:ViewUsage",
+        "aws-portal:ViewPaymentMethods",
+        "aws-portal:ViewBudget",
+        "ce:*",
+        "cur:*",
+        "budgets:*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

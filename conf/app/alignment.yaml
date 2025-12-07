@@ -1,0 +1,40 @@
+_target_: refrag.framework.apps.train.RefragTrainerApp
+
+model_name: "facebook/opt-125m"
+
+
+
+
+model:
+  encoder: roberta-base
+  decoder: ibm-granite/granite-4.0-350M
+
+trainer:
+  output_dir: outputs/alignment
+  logging_steps: 10
+  save_steps: 1000
+  grad_accum_steps: 1
+  max_steps: -1
+
+hydra:
+  job:
+    name: train_alignment
+
+data:
+  use_builtin: true
+  path: null
+  max_len: null
+
+loss:
+  mse:
+    type: simple
+    fn: mse
+    weight: 1.0
+  kld:
+    type: simple
+    fn: kld
+    weight: 1.0
+  argmax:
+    type: simple
+    fn: argmax
+    weight: 0.2

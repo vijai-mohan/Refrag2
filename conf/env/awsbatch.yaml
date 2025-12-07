@@ -1,0 +1,72 @@
+# AWS Batch Launcher Configuration
+# Used to submit jobs to AWS Batch for distributed training
+# Automatically selects CPU or GPU queue based on GPU count
+
+
+_target_: refrag.framework.envs.awsbatch.AWSBatchLauncher
+
+# AWS Batch configuration
+region: us-east-1
+
+# Queue names (auto-selected based on GPU count)
+cpu_job_queue: refrag-cpu-job-queue
+gpu_job_queue: refrag-gpu-job-queue
+cpu_job_definition_name: refrag-cpu-job-def
+gpu_job_definition_name: refrag-gpu-job-def
+
+# Manual override (leave empty for auto-selection)
+job_queue: ""  # Auto-selects based on gpus parameter
+job_definition_name: ""  # Auto-selects based on gpus parameter
+
+# Compute resources
+vcpus: 8
+memory: 32
+gpus: 0  # Total GPUs (legacy single-host total). If num_hosts > 1, prefer gpus_per_host * num_hosts.
+
+# Distributed settings
+num_hosts: 1            # Number of hosts (Batch multi-node job). 1 = single host.
+gpus_per_host: 1        # GPUs per host when using multi-host training (ignored if gpus==0 and num_hosts==1)
+
+# Environment variables to pass through to the container
+env_passthrough:
+  - AWS_DEFAULT_REGION
+  - AWS_REGION
+  - S3_BUCKET
+  - HYDRA_FULL_ERROR
+  - RUN_NAME
+
+# Code overlay settings - syncs local workspace to S3 before job execution
+overlay:
+  enabled: true
+  s3_bucket: leykainc
+  s3_prefix: jobs/batch
+
+  # Files to include in overlay (glob patterns)
+  include_patterns:
+    - "*.*"
+  # Files to exclude from overlay (glob patterns)
+  exclude_patterns:
+    - "__pycache__/**"
+    - "**/__pycache__/**"
+    - "*.pyc"
+    - "**/*.pyc"
+    - ".git/**"
+    - ".pytest_cache/**"
+    - "*.egg-info/**"
+    - "venv/**"
+    - ".hydra/**"
+    - "outputs/**"
+    - "multirun/**"
+    - "**/*.log"
+    - ".env"
+    - ".env.*"
+    - "*.swp"
+    - ".DS_Store"
+    - "webapp/outputs/**"
+    - "webapp/node_modules/**"
+    - "*.pdf"
+    - "docs/**"
+    - "infra/**"
+# Job settings
+job_timeout_seconds: 86400  # 24 hours
+retry_attempts: 1

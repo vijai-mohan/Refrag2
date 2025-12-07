@@ -1,0 +1,10 @@
+_target_: refrag.framework.envs.docker.DockerLauncher
+image: refrag:latest
+workdir: /workspace
+mounts: [".:/workspace", "${oc.env:HOME}/.cache:/root/.cache", "${oc.env:HOME}/.huggingface:/root/.huggingface"]
+env_passthrough:
+  - HYDRA_FULL_ERROR
+  - HF_TOKEN
+  - WANDB_API_KEY
+  - RUN_NAME
+
