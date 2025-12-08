@@ -1,5 +1,8 @@
-# Refrag: Retrieval-Augmented Generation with Aligned Embeddings
-
+# Refrag2: Retrieval-Augmented Generation with Aligned Embeddings
+Goal of this project is to continue the research if Refrag paper. There are a few improvements needed for graduating Refrag reaearch and using it in production 
+1. Upgrade Refrag recipes to start from a post trained model instead of a pretrained model. This will make the technology available across all the open source models and potentially simplify the recipe.
+2. Change the context window format to also include document ids, so we can interleave embeddings and raw text such that citation information is preserved
+3. Modify the encoder input to take the query, so that the chunk selection is query dependent. This will also eliminate the need to use RL and allow for just using a gate on a chunk level to decide which ones to pass along.
 ## Documentation
 
 Use this table of contents to find what you need quickly:
@@ -510,3 +513,4 @@ assert 'refrag' in p.parts, f"Not in refrag venv: {p}"
 print("✅ refrag venv active:", p)
 PY
 ```
+
