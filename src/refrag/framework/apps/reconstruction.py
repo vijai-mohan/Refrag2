@@ -409,11 +409,11 @@ class ReconstructionCurriculumApp:
                                 obtained_chunks.append(decoder_tok.decode(trimmed_preds, skip_special_tokens=True))
                     obtained_text = " | ".join(_escape_md_cell(oc) for oc in obtained_chunks if oc) if obtained_chunks else "(n/a)"
 
-                    row = f"| {sample_no} | {context_cell} | ***{target_text}*** | ***{obtained_text}*** |"
+                    row = f"| {sample_no} | {context_cell} | {target_text} | {obtained_text} |"
                     text_examples.append(row)
                     if global_step % text_log_every == 0 or len(text_examples) >= 10:
                         samples = text_examples[-10:]
-                        header = "| Sample No | Context | Target | Obtained |\n| --- | --- | --- | --- |"
+                        header = "| No | Context | Target | Obtained |\n| --- | --- | --- | --- |"
                         writer.add_text("reconstruction/examples", "\n".join([header] + samples), global_step)
                         text_examples.clear()
                 if app_cfg.train.get("log_every") and global_step % int(app_cfg.train.log_every) == 0:
@@ -432,6 +432,28 @@ class ReconstructionCurriculumApp:
                         if values:
                             writer.add_histogram(f"chunks/perplexity_hist/{cf}", torch.tensor(values), global_step)
                             writer.add_scalar(f"chunks/perplexity_avg/{cf}", sum(values) / len(values), global_step)
+                    # Emit a simple Table-12 style row into TensorBoard Text every log interval.
+                    desired_tokens = [16, 32, 128, 2048]
+                    base_tokens = int(app_cfg.curriculum.base_tokens_per_chunk)
+                    header = ["Tokens"] + [f"P{tok}" for tok in desired_tokens]
+                    row_vals = ["Perplexity"]
+                    for tok in desired_tokens:
+                        if tok % base_tokens != 0:
+                            row_vals.append("n/a")
+                            continue
+                        cf = tok // base_tokens
+                        vals = chunk_ppl_history.get(cf, [])
+                        if vals:
+                            ppl_avg = sum(vals) / len(vals)
+                            row_vals.append(f"{ppl_avg:.2f}")
+                        else:
+                            row_vals.append("n/a")
+                    table_md = (
+                        "| " + " | ".join(header) + " |\n"
+                        "| " + " | ".join(["---"] * len(header)) + " |\n"
+                        "| " + " | ".join(row_vals) + " |"
+                    )
+                    writer.add_text("chunks/ppl_table", table_md, global_step)
                     log.info(
                         "step=%d stage=%s domain=%s chunk=%d loss=%.4f ppl=%.2f avg=%.4f lr=%.2e tokens=%s toks/s=%.1f eta=%s",
                         global_step,
@@ -463,6 +485,29 @@ class ReconstructionCurriculumApp:
                             writer.add_scalar(f"reconstruction/eval_loss_domain/{dom}", dom_loss, global_step)
                         domain_msg = " ".join([f"{d}:ppl={dom_ppl:.2f}" for d, (_, dom_ppl) in eval_domains.items()])
                         log.info("eval step=%d loss=%.4f ppl=%.2f domains=[%s]", global_step, eval_loss, eval_ppl, domain_msg)
+                        # Log a Table-12-style row for P16/P32/P128/P2048.
+                        desired_tokens = [16, 32, 128, 2048]
+                        base_tokens = int(app_cfg.curriculum.base_tokens_per_chunk)
+                        header = ["Tokens"] + [f"P{tok}" for tok in desired_tokens]
+                        row_vals = ["Perplexity"]
+                        for tok in desired_tokens:
+                            if tok % base_tokens != 0:
+                                row_vals.append("n/a")
+                                continue
+                            cf = tok // base_tokens
+                            vals = chunk_ppl_history.get(cf, [])
+                            if vals:
+                                ppl_avg = sum(vals) / len(vals)
+                                row_vals.append(f"{ppl_avg:.2f}")
+                            else:
+                                row_vals.append("n/a")
+                        table_md = (
+                            "| " + " | ".join(header) + " |\n"
+                            "| " + " | ".join(["---"] * len(header)) + " |\n"
+                            "| " + " | ".join(row_vals) + " |"
+                        )
+                        writer.add_text("chunks/ppl_table", table_md, global_step)
+                        log.info("chunk PPL table at step %d:\n%s", global_step, table_md)
 
                 if app_cfg.train.get("max_steps") is not None and global_step >= int(app_cfg.train.max_steps):
                     break

@@ -1,4 +1,4 @@
-# Reconstruction curriculum training (dev-friendly defaults; use stage_scale=1.0 to reproduce Table 12)
+# Reconstruction curriculum training (Table 11/12 reproduction defaults)
 _target_: refrag.framework.apps.reconstruction.ReconstructionCurriculumApp
 
 device: ${device}
@@ -12,36 +12,40 @@ model:
   pad_token_id: 1
 
 dataset:
-  # Use a small RedPajama sample for quick dev runs without large shard enumeration.
-  name: "michelangelo-engs/RedPajama-Data-1T-1024Sample"
+  # SlimPajama with ArXiv/Books3 domains per paper (override RECON_DATASET_NAME/RECON_DATA_FILES to use a local sample).
+  name: "cerebras/SlimPajama-627B"
   split: "train"
   text_key: "text"
   streaming: true
-  filter_field: null
+  filter_field: "pile_set_name"
   seed: ${seed}
-  max_tokens: 256  # s = 2048 tokens per example (T = 4096 with o = 2048 held out for CPT)
-  min_tokens: 64
-  shuffle_buffer: 100  # keep buffer small so only a tiny slice is streamed during dev runs
+  max_tokens: 2048  # s = 2048 tokens per example (T = 4096 with o = 2048 held out for CPT)
+  min_tokens: 8
+  shuffle_buffer: 2000
   domains:
-    - name: "redpajama_sample"
-      weight: 1.0
-      token_budget: 256000   # small dev budget to avoid large downloads
-      max_samples: 256000
+    - name: "arxiv"
+      values: ["ArXiv"]
+      weight: 0.5
+      token_budget: 10000000000  # 10B tokens from ArXiv (half of 20B total)
+    - name: "book"
+      values: ["Books3"]
+      weight: 0.5
+      token_budget: 10000000000  # 10B tokens from Book domain
   hf_token: ${HF_TOKEN}
 
 train:
-  batch_size: 1
+  batch_size: 4
   lr: 2e-4
   grad_clip: 1.0
   warmup_ratio: 0.01
   scheduler: cosine
   log_every: 100
-  save_steps: 500
-  stage_scale: 1.0  # run at 0.1% of table-8 counts for quick dev smoke tests
-  max_steps: 256000      # cap steps so only a small slice of data is streamed
-  eval_every: 500       # run lightweight eval to track loss during training
-  eval_batches: 8       # number of eval batches per checkpoint
-  log_text_every: 200   # write ~10 recent text snippets to TensorBoard
+  save_steps: 100
+  stage_scale: 1.0  # matches table-8/12 curriculum counts
+  max_steps: null   # use full curriculum by default (~42k steps with batch_size=1)
+  eval_every: null
+  eval_batches: null
+  log_text_every: 100
   output_dir: ${hydra:run.dir}/reconstruction
   log_dir: ${hydra:run.dir}/tf
 
@@ -49,7 +53,7 @@ curriculum:
   base_tokens_per_chunk: 8  # k tokens per chunk embedding
   stages:
     - name: stage1
-      total_samples: 20000
+      total_samples: 2000
       mix:
         1: 1333
         2: 333
@@ -61,7 +65,7 @@ curriculum:
         128: 1
         256: 1
     - name: stage2
-      total_samples: 20000
+      total_samples: 2000
       mix:
         1: 445
         2: 298
@@ -73,7 +77,7 @@ curriculum:
         128: 3
         256: 3
     - name: stage3
-      total_samples: 20000
+      total_samples: 2000
       mix:
         1: 148
         2: 267
@@ -85,7 +89,7 @@ curriculum:
         128: 9
         256: 9
     - name: stage4
-      total_samples: 40000
+      total_samples: 4000
       mix:
         1: 49
         2: 238
@@ -97,7 +101,7 @@ curriculum:
         128: 25
         256: 25
     - name: stage5
-      total_samples: 40000
+      total_samples: 4000
       mix:
         1: 16
         2: 213
@@ -109,7 +113,7 @@ curriculum:
         128: 73
         256: 73
     - name: stage6
-      total_samples: 40000
+      total_samples: 4000
       mix:
         1: 6
         2: 191
@@ -121,7 +125,7 @@ curriculum:
         128: 212
         256: 212
     - name: stage7
-      total_samples: 80000
+      total_samples: 8000
       mix:
         1: 2
         2: 171
@@ -133,7 +137,7 @@ curriculum:
         128: 618
         256: 618
     - name: stage8
-      total_samples: 80000
+      total_samples: 8000
       mix:
         1: 1
         2: 153
@@ -145,7 +149,7 @@ curriculum:
         128: 1802
         256: 1802
     - name: stage9
-      total_samples: 80000
+      total_samples: 8000
       mix:
         1: 0
         2: 137

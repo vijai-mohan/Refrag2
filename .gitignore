@@ -103,3 +103,4 @@ outputs/
 !conf/env/
 !conf/env/**
 !env/
+redpajama_1b_sample
