@@ -221,7 +221,7 @@ We construct a DP table where:
 | enc \ dec | j=0 ("") | j=1 ("Refr") | j=2 ("Refrag") | j=3 ("Refragation") |
 |-----------|----------|--------------|----------------|---------------------|
 | i=0 ("")  | **True** | False        | False          | False               |
-| i=1 ("Re")| False    | **True**     | False          | False               |
+| i=1 ("Re")| False    | **False**     | False          | False               |
 | i=2 ("Refrag")| False | False       | **True**       | False               |
 | i=3 ("Refragation")| False | False  | False          | **True**            |
 
@@ -530,5 +530,6 @@ assert 'refrag' in p.parts, f"Not in refrag venv: {p}"
 print("✅ refrag venv active:", p)
 PY
 ```
+
 
 
