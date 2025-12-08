@@ -36,13 +36,16 @@ tensorboard --logdir outputs
 ```
 Key groups: `reconstruction/*` for losses and throughput, `chunks/*` for chunk-level perplexity/histograms, and `reconstruction/examples` for sample text tables.
 
-### Visual references
+### Screenshot from runs for reconstruction task
+
+#### Console log sample
+![Console log sample](screenshots/console_log_sample.png)
+
+#### Scalars overview
 ![Scalars overview](screenshots/tb_scalars_overview.png)
 
-![Chunk metrics tab](screenshots/tb_chunks_tab.png)
+#### Chunk reconstructions in text tab
+![Chunk Reconstructions in Text Tab](screenshots/tb_chunks_tab.png)
 
-![Text samples table (expected/obtained)](screenshots/tb_text_table.png)
-
-![Examples table view](screenshots/tb_examples_table.png)
-
-![Console log sample](screenshots/console_log_sample.png)
+#### Text samples table (similar to Refrag Paper Table 12)
+![Table in Text table Similar to Refrag Paper Table 12](screenshots/tb_text_table.png)
