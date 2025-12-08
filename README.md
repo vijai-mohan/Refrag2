@@ -20,6 +20,16 @@ This upgrade:
 - makes chunk scoring query-specific
 - removes the need for reinforcement learning
 - allows for simple chunk-level gating to determine which segments are passed forward
+## 4. Ablation: Fixed-Length vs. Variable-Length Chunking
+
+Conduct an ablation comparing **fixed-length chunking** with **variable-length (sentence-based) chunking** to determine which approach yields more compact and semantically faithful representations.
+- Rather than chunking every *k* tokens, evaluate embedding entire sentences or semantic spans.
+- Fixed-length chunking can break natural word and sentence boundaries, causing meaning to spill across chunks.
+- Variable-length chunking may:
+  - preserve semantic units
+  - reduce embedding fragmentation
+  - provide more faithful context mapping
+  - improve retrieval and chunk selection performance
 ## Documentation
 
 Use this table of contents to find what you need quickly:
@@ -530,6 +540,7 @@ assert 'refrag' in p.parts, f"Not in refrag venv: {p}"
 print("✅ refrag venv active:", p)
 PY
 ```
+
 
 
 
