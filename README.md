@@ -1,8 +1,25 @@
 # Refrag2: Retrieval-Augmented Generation with Aligned Embeddings
-Goal of this project is to continue the research if Refrag paper. There are a few improvements needed for graduating Refrag reaearch and using it in production 
-1. Upgrade Refrag recipes to start from a post trained model instead of a pretrained model. This will make the technology available across all the open source models and potentially simplify the recipe.
-2. Change the context window format to also include document ids, so we can interleave embeddings and raw text such that citation information is preserved
-3. Modify the encoder input to take the query, so that the chunk selection is query dependent. This will also eliminate the need to use RL and allow for just using a gate on a chunk level to decide which ones to pass along.
+
+The primary objective of this project is to advance the Refrag work from a research prototype into production-ready technology. To achieve this, several key improvements are required:
+
+## 1. Upgrade Refrag recipes to use post-trained models
+Transition recipe foundations from **pretrained** models to **post-trained** models.  
+This change will:
+- broaden compatibility across open-source model families
+- potentially simplify the overall recipe pipeline
+
+## 2. Revise the context window format to include document identifiers
+Update the context window so that **document IDs** are embedded alongside raw text.  
+This enables:
+- interleaving embeddings and text
+- maintaining citation and provenance fidelity throughout retrieval
+
+## 3. Enable query-dependent encoding
+Modify the encoder to **condition on the input query** to drive chunk selection.  
+This upgrade:
+- makes chunk scoring query-specific
+- removes the need for reinforcement learning
+- allows for simple chunk-level gating to determine which segments are passed forward
 ## Documentation
 
 Use this table of contents to find what you need quickly:
@@ -513,4 +530,5 @@ assert 'refrag' in p.parts, f"Not in refrag venv: {p}"
 print("✅ refrag venv active:", p)
 PY
 ```
+
 
